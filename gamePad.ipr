@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/gamePad.iml" filepath="$PROJECT_DIR$/gamePad.iml" />
+    </modules>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="libraryTable">
+    <library name="jamepad">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES>
+        <root url="file://$PROJECT_DIR$/../../libraries/Jamepad-master/Jamepad-master/src" />
+      </SOURCES>
+    </library>
+    <library name="lwjgl">
+      <CLASSES>
+        <root url="file://$PROJECT_DIR$/../../libraries/lwjgl-3.2.3/lwjgl" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="file://$PROJECT_DIR$/../../libraries/lwjgl-3.2.3/lwjgl" />
+      </SOURCES>
+      <jarDirectory url="file://$PROJECT_DIR$/../../libraries/lwjgl-3.2.3/lwjgl" recursive="false" />
+      <jarDirectory url="file://$PROJECT_DIR$/../../libraries/lwjgl-3.2.3/lwjgl" recursive="false" type="SOURCES" />
+    </library>
+    <library name="lwjgl-3.2">
+      <CLASSES>
+        <root url="file://$PROJECT_DIR$/../../libraries/lwjgl-3.2.3" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+      <jarDirectory url="file://$PROJECT_DIR$/../../libraries/lwjgl-3.2.3" recursive="false" />
+    </library>
+    <library name="src">
+      <CLASSES />
+      <JAVADOC />
+      <SOURCES>
+        <root url="file://$PROJECT_DIR$/../../libraries/Jamepad-master/Jamepad-master/src" />
+      </SOURCES>
+    </library>
+  </component>
+</project>
