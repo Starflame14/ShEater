@@ -17,5 +17,7 @@ public enum EnemyType {
     BOSS_GROWER,
     BOSS_MOTHER,
     BOSS_MINER,
-    BOSS_BEAMER
+    BOSS_BEAMER,
+    BOSS_BLOWER,
+    BOSS_SNIPER
 }

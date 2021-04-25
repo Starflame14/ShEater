@@ -36,7 +36,7 @@ public class Bomb extends Entity{
                     }
                 }
             } else {
-                if(Game.distance(posX, posY, Main.player.posX, Main.player.posY) <= Main.player.r / 2.0 + 300){
+                if(Game.distance(posX, posY, Main.player.posX, Main.player.posY) <= Main.player.r / 2.0 + 200){
                     Main.player.hp -= 5;
                 }
             }

@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class LevelDesign {
-    int level = 1;
+    int level = 0;
 
     Random rnd = new Random();
 
@@ -40,10 +40,8 @@ public class LevelDesign {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_BASIC));
                 } else {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_EATER));
-                    System.out.println("boss eater");
                     for (int i = 0; i < 8; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.BASIC));
-                        System.out.println("basic " + i);
                     }
                 }
                 break;
@@ -126,12 +124,17 @@ public class LevelDesign {
             case 22:
             case 23:
             case 24:
-                if(rnd.nextFloat() <= 0.99){
-                    Main.game.enemies.add(new Enemy(EnemyType.SNIPER));
+                if(rnd.nextFloat() <= 0.5){
+                    for (int i = 0; i < 5; i++) {
+                        Main.game.enemies.add(new Enemy(EnemyType.SNIPER));
+                    }
                 } else {
-
+                    for (int i = 0; i < 3; i++) {
+                        Main.game.enemies.add(new Enemy(EnemyType.BLOWER));
+                    }
                 }
-
+                create(rnd.nextInt(level - 5));
+                break;
 
 
         }
@@ -141,6 +144,7 @@ public class LevelDesign {
 
     void createPowerUps() {
         Main.game.powerUps.add(new PowerUp(PowerUpType.EndLevel));
+
 
         for (int i = 0; i < level + 1; i++) {
             while (true) {

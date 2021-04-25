@@ -183,6 +183,7 @@ public class MenuPoints {
                 Main.mainMenu.active = false;
                 Main.player.hp = 0;
                 Main.infinite = false;
+                System.exit(69);
                 break;
 
             case SELECT_MODE:

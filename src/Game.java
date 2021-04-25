@@ -108,6 +108,7 @@ public class Game {
                 eatPowerUps();
                 moveEnemies();
                 moveEnemyMissiles();
+                explodeBombs();
                 killPlayer();
                 killEnemies();
 
@@ -188,6 +189,7 @@ public class Game {
                 eatPowerUps();
                 moveEnemies();
                 moveEnemyMissiles();
+                explodeBombs();
                 killShield();
                 killPlayer();
                 killEnemies();
@@ -253,7 +255,7 @@ public class Game {
     }
 
     static double getDir(double x1, double y1, double x2, double y2){
-        return Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+        return Math.atan2(y1 - y2, x2 - x1) * 180 / Math.PI;
     }
 
     void killEnemies() {
@@ -472,6 +474,27 @@ public class Game {
 
         for (Missile missile : enemyMissiles) {
             missile.move();
+        }
+    }
+
+    void explodeBombs() {
+        boolean finished = false;
+        while (!finished) {
+            finished = true;
+            int index = -1;
+            for (int i = 0; i < bombs.size(); i++) {
+                if (bombs.get(i).timeRemaining < -10) {
+                    finished = false;
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index != -1) bombs.remove(index);
+        }
+
+        for (Bomb bomb : bombs) {
+            bomb.explode();
         }
     }
 

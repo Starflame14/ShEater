@@ -88,6 +88,14 @@ public class Display {
                         Main.player.bombRange * 2, Main.player.bombRange * 2);
             }
         }
+
+        for (Bomb bomb: Main.game.bombs){
+            if (bomb.timeRemaining <= 0) {
+                g.setColor(Color.RED);
+                g.fillOval((int) bomb.posX - 200, (int) bomb.posY - 200,
+                        400, 400);
+            }
+        }
     }
 
     static void drawEnemies(Graphics g) {
@@ -236,6 +244,19 @@ public class Display {
                                 enemy.r, enemy.r);
 
                         g.setColor(Color.BLACK);
+                        g.drawString("HP: " + enemy.hp, (int) posX - 15, (int) posY + 5);
+                        break;
+
+                    case BLOWER:
+                        g.setColor(Color.BLACK);
+                        g.fillOval((int) posX - enemy.r / 2, (int) posY - enemy.r / 2,
+                                enemy.r, enemy.r);
+
+                        g.setColor(Color.RED);
+                        g.fillOval((int) posX - enemy.r / 4, (int) posY - enemy.r / 4,
+                                enemy.r / 2, enemy.r / 2);
+
+                        g.setColor(Color.GREEN);
                         g.drawString("HP: " + enemy.hp, (int) posX - 15, (int) posY + 5);
                         break;
                 }

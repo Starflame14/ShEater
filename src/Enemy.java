@@ -180,7 +180,6 @@ public class Enemy extends Entity {
 
             case EATER:
             case BOSS_EATER:
-            case BLOWER:
                 angle1 = ((dir + 180) * Math.PI / 180) % 360;
                 angle2 = ((dir + 0) * Math.PI / 180) % 360;
 
@@ -329,11 +328,29 @@ public class Enemy extends Entity {
 
                 if (lifeSpan % 200 == 0) {
                     Main.game.enemyMissiles.add(new Missile(
-                            this, Game.getDir(this.posX, this.posY, Main.player.posX, Main.player.posY)
+                            this,
+                            Game.getDir(this.posX, this.posY, Main.player.posX, Main.player.posY)
                     ));
                 }
                 if (lifeSpan >= 1000 + id) {
                     lifeSpan = 0;
+                    dir = Math.abs(rnd.nextFloat() * 1000) % 360;
+                }
+                break;
+
+            case BLOWER:
+                angle1 = ((dir + 180) * Math.PI / 180) % 360;
+                angle2 = ((dir + 0) * Math.PI / 180) % 360;
+
+                posX = posX + (Math.cos(angle2) * speed);
+                posY = posY + (Math.sin(angle1) * speed);
+
+                lifeSpan++;
+                if (lifeSpan >= 500 + id) {
+                    Main.game.bombs.add(new Bomb(this));
+
+                    lifeSpan = 0;
+
                     dir = Math.abs(rnd.nextFloat() * 1000) % 360;
                 }
                 break;
