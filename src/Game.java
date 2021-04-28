@@ -1,6 +1,9 @@
 import com.studiohartman.jamepad.ControllerManager;
 import com.studiohartman.jamepad.ControllerState;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,6 +18,9 @@ public class Game {
     ArrayList<Missile> enemyMissiles = new ArrayList<>();
     ArrayList<Bomb> bombs = new ArrayList<>();
     ArrayList<PowerUp> powerUps = new ArrayList<>();
+
+    KeyEvent keyEvent;
+    boolean mousePressed = false;
 
     int tick;
 
@@ -134,32 +140,71 @@ public class Game {
 
                 currState = controllers.getState(0);
 
-                if (currState.startJustPressed) {
-                    Main.inGameMenu.active = true;
+                if (currState.isConnected) {
+                    if (currState.startJustPressed) {
+                        Main.inGameMenu.active = true;
+                    }
+                } else {
+                    if (keyEvent != null && keyEvent.getKeyChar() == '\u001B') {
+                        Main.inGameMenu.active = true;
+                        keyEvent = null;
+                    }
                 }
                 waitWhileMenuActive(Main.inGameMenu);
 
-                if (currState.backJustPressed) {
-                    Main.skillMenu.active = true;
+                if (currState.isConnected) {
+                    if (currState.backJustPressed) {
+                        Main.skillMenu.active = true;
+                    }
+                } else {
+                    if (keyEvent != null && keyEvent.getKeyChar() == '\t') {
+                        Main.skillMenu.active = true;
+                        keyEvent = null;
+                    }
                 }
                 while (Main.skillMenu.active) {
                     currState = controllers.getState(0);
 
-                    if (currState.bJustPressed) {
-                        Main.skillMenu.active = false;
-                    }
-                    if (currState.aJustPressed) {
-                        Main.skillMenu.menuPoints.get(Main.skillMenu.selected).resolve();
-                    }
-                    if (currState.dpadDownJustPressed) {
-                        Main.skillMenu.selected++;
-                        if (Main.skillMenu.selected >= Main.skillMenu.menuPoints.size())
-                            Main.skillMenu.selected = Main.skillMenu.menuPoints.size() - 1;
-                    }
-                    if (currState.dpadUpJustPressed) {
-                        Main.skillMenu.selected--;
-                        if (Main.skillMenu.selected < 0) {
-                            Main.skillMenu.selected = 0;
+                    if (currState.isConnected) {
+                        if (currState.bJustPressed) {
+                            Main.skillMenu.active = false;
+                        }
+                        if (currState.aJustPressed) {
+                            Main.skillMenu.menuPoints.get(Main.skillMenu.selected).resolve();
+                        }
+                        if (currState.dpadDownJustPressed) {
+                            Main.skillMenu.selected++;
+                            if (Main.skillMenu.selected >= Main.skillMenu.menuPoints.size())
+                                Main.skillMenu.selected = Main.skillMenu.menuPoints.size() - 1;
+                        }
+                        if (currState.dpadUpJustPressed) {
+                            Main.skillMenu.selected--;
+                            if (Main.skillMenu.selected < 0) {
+                                Main.skillMenu.selected = 0;
+                            }
+                        }
+                    } else {
+                        if (keyEvent != null && keyEvent.getKeyChar() == '\u001B') {
+                            Main.skillMenu.active = false;
+                            keyEvent = null;
+                        }
+                        if (keyEvent != null && (keyEvent.getKeyChar() == '\n' || keyEvent.getKeyChar() == ' ')) {
+                            Main.skillMenu.menuPoints.get(Main.skillMenu.selected).resolve();
+                            keyEvent = null;
+                        }
+                        if (keyEvent != null && keyEvent.getKeyChar() == 's') {
+                            Main.skillMenu.selected++;
+                            if (Main.skillMenu.selected >= Main.skillMenu.menuPoints.size()) {
+                                Main.skillMenu.selected = Main.skillMenu.menuPoints.size() - 1;
+                            }
+                            keyEvent = null;
+                        }
+                        if (keyEvent != null && keyEvent.getKeyChar() == 'w') {
+                            Main.skillMenu.selected--;
+                            if (Main.skillMenu.selected < 0) {
+                                Main.skillMenu.selected = 0;
+                            }
+                            keyEvent = null;
                         }
                     }
 
@@ -172,15 +217,47 @@ public class Game {
                     waitWhileMenuActive(Main.stompUpg);
                 }
 
-                //currState = controllers.getState(0);
+                if (currState.isConnected) {
+                    Main.player.dir = currState.leftStickAngle;
+                    if (currState.rightTrigger == 1) Main.player.fast = true;
+                    else Main.player.fast = false;
+                    if (currState.bJustPressed) Main.player.deployBomb();
+                    if (currState.lbJustPressed) Main.player.pickUpAllPowerUps();
+                    if (currState.yJustPressed) Main.player.burst();
+                    if (currState.aJustPressed) Main.player.stomp();
+                } else {
+                    int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+                    int mouseY = MouseInfo.getPointerInfo().getLocation().y;
+                    int frameX = Display.frame.getLocationOnScreen().x;
+                    int frameY = Display.frame.getLocationOnScreen().y;
+                    int x = mouseX - frameX;
+                    int y = mouseY - frameY;
 
-                Main.player.dir = currState.leftStickAngle;
-                if (currState.rightTrigger == 1) Main.player.fast = true;
-                else Main.player.fast = false;
-                if (currState.bJustPressed) Main.player.deployBomb();
-                if (currState.lbJustPressed) Main.player.pickUpAllPowerUps();
-                if (currState.yJustPressed) Main.player.burst();
-                if (currState.aJustPressed) Main.player.stomp();
+                    Main.player.dir = getDir(Main.player.posX, Main.player.posY, x, y);
+
+                    if (keyEvent != null && keyEvent.isShiftDown()) {
+                        Main.player.fast = true;
+                    } else {
+                        Main.player.fast = false;
+                    }
+                    if (keyEvent != null && keyEvent.getKeyChar() == 'c') {
+                        Main.player.deployBomb();
+                        keyEvent = null;
+                    }
+                    if (keyEvent != null && keyEvent.getKeyChar() == '\b') {
+                        Main.player.pickUpAllPowerUps();
+                        keyEvent = null;
+                    }
+                    if (keyEvent != null && keyEvent.getKeyChar() == 'z') {
+                        Main.player.burst();
+                        keyEvent = null;
+                    }
+                    if (keyEvent != null && keyEvent.getKeyChar() == ' ') {
+                        Main.player.stomp();
+                        keyEvent = null;
+                    }
+                }
+
                 Main.player.move();
                 Main.player.moveMissiles();
                 Main.player.explodeBombs();
@@ -194,7 +271,15 @@ public class Game {
                 killPlayer();
                 killEnemies();
 
-                if (currState.xJustPressed) Main.player.shoot();
+                if (currState.isConnected) {
+                    if (currState.xJustPressed) Main.player.shoot();
+                } else {
+                    if ((keyEvent != null && keyEvent.getKeyChar() == 'x') || mousePressed) {
+                        Main.player.shoot();
+                        keyEvent = null;
+                        mousePressed = false;
+                    }
+                }
 
                 Display.refresh();
 
@@ -208,7 +293,14 @@ public class Game {
             if (Main.infinite) {
                 while (true) {
                     ControllerState currState = controllers.getState(0);
-                    if (currState.yJustPressed) restart();
+                    if(currState.isConnected){
+                        if (currState.aJustPressed) restart();
+                    } else {
+                        if(keyEvent != null && keyEvent.getKeyChar() == ' '){
+                            restart();
+                            keyEvent = null;
+                        }
+                    }
                 }
             }
         }
@@ -254,7 +346,7 @@ public class Game {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 
-    static double getDir(double x1, double y1, double x2, double y2){
+    static double getDir(double x1, double y1, double x2, double y2) {
         return Math.atan2(y1 - y2, x2 - x1) * 180 / Math.PI;
     }
 
@@ -267,11 +359,11 @@ public class Game {
                 }
             }
 
-            if(Main.player.stomp != null){
-                if(distance(enemy.posX, enemy.posY, Main.player.posX, Main.player.posY) <=
-                        enemy.r / 2.0 + Main.player.stomp.r / 2.0){
-                    if(Main.game.tick % 50 == 0)
-                    enemy.hp -= Main.player.stompDamage;
+            if (Main.player.stomp != null) {
+                if (distance(enemy.posX, enemy.posY, Main.player.posX, Main.player.posY) <=
+                        enemy.r / 2.0 + Main.player.stomp.r / 2.0) {
+                    if (Main.game.tick % 50 == 0)
+                        enemy.hp -= Main.player.stompDamage;
                 }
             }
         }
@@ -538,21 +630,43 @@ public class Game {
         while (menu.active) {
             currState = controllers.getState(0);
 
-            if (currState.bJustPressed) {
-                menu.active = false;
-            }
-            if (currState.aJustPressed) {
-                menu.menuPoints.get(menu.selected).resolve();
-            }
-            if (currState.dpadDownJustPressed) {
-                menu.selected++;
-                if (menu.selected >= menu.menuPoints.size())
-                    menu.selected = menu.menuPoints.size() - 1;
-            }
-            if (currState.dpadUpJustPressed) {
-                menu.selected--;
-                if (menu.selected < 0) {
-                    menu.selected = 0;
+            if (currState.isConnected) {
+                if (currState.bJustPressed) {
+                    menu.active = false;
+                }
+                if (currState.aJustPressed) {
+                    menu.menuPoints.get(menu.selected).resolve();
+                }
+                if (currState.dpadDownJustPressed) {
+                    menu.selected++;
+                    if (menu.selected >= menu.menuPoints.size())
+                        menu.selected = menu.menuPoints.size() - 1;
+                }
+                if (currState.dpadUpJustPressed) {
+                    menu.selected--;
+                    if (menu.selected < 0) {
+                        menu.selected = 0;
+                    }
+                }
+            } else {
+                if (keyEvent != null && keyEvent.getKeyChar() == '\u001B') {
+                    menu.active = false;
+                    keyEvent = null;
+                } else if (keyEvent != null && (keyEvent.getKeyChar() == '\n' || keyEvent.getKeyChar() == ' ')) {
+                    menu.menuPoints.get(menu.selected).resolve();
+                    keyEvent = null;
+                } else if (keyEvent != null && keyEvent.getKeyChar() == 's') {
+                    menu.selected++;
+                    if (menu.selected >= menu.menuPoints.size()) {
+                        menu.selected = menu.menuPoints.size() - 1;
+                    }
+                    keyEvent = null;
+                } else if (keyEvent != null && keyEvent.getKeyChar() == 'w') {
+                    menu.selected--;
+                    if (menu.selected < 0) {
+                        menu.selected = 0;
+                    }
+                    keyEvent = null;
                 }
             }
 

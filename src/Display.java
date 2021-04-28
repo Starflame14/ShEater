@@ -15,6 +15,9 @@ public class Display {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(screenWidth, screenHeight);
         frame.setLocationRelativeTo(null);
+        frame.addKeyListener(new MyKeyListener());
+        frame.addMouseListener(new MyMouseListener());
+        frame.setFocusTraversalKeysEnabled(false);
         frame.setVisible(true);
 
         panel = new MyPanel();
