@@ -5,12 +5,12 @@ public class LevelDesign {
 
     Random rnd = new Random();
 
-    void create(){
+    void create() {
         create(level);
     }
 
     void create(int level) {
-        switch (level){
+        switch (level) {
             case 0:
                 for (int i = 0; i < 5; i++) {
                     Main.game.enemies.add(new Enemy(EnemyType.BASIC));
@@ -21,22 +21,22 @@ public class LevelDesign {
             case 2:
             case 3:
             case 4:
-                if(rnd.nextFloat() <= 0.5){
-                    for (int i = 0; i < 10; i++) {
+                if (rnd.nextFloat() <= 0.5) {
+                    for (int i = 0; i < 8 + level * 2; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.BASIC));
                     }
                 } else {
-                    for (int i = 0; i < 2; i++) {
+                    for (int i = 0; i < 1 + level; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.EATER));
                     }
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < 4 + level; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.BASIC));
                     }
                 }
                 break;
 
             case 5:
-                if(rnd.nextFloat() <= 0.5){
+                if (rnd.nextFloat() <= 0.5) {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_BASIC));
                 } else {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_EATER));
@@ -50,12 +50,12 @@ public class LevelDesign {
             case 7:
             case 8:
             case 9:
-                if(rnd.nextFloat() <= 0.5){
-                    for (int i = 0; i < 5; i++) {
+                if (rnd.nextFloat() <= 0.5) {
+                    for (int i = 0; i < level; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.SHOOTER));
                     }
                 } else {
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < level; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.CHARGER));
                     }
                 }
@@ -63,22 +63,24 @@ public class LevelDesign {
                 break;
 
             case 10:
-                if(rnd.nextFloat() <= 0.5){
+                if (rnd.nextFloat() <= 0.5) {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_SHOOTER));
                 } else {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_CHARGER));
                 }
+                create(rnd.nextInt(level - 6));
                 break;
 
             case 11:
             case 12:
             case 13:
             case 14:
-                if(rnd.nextFloat() <= 0.5){
-                    Main.game.enemies.add(new Enemy(EnemyType.GROWER));
-                    Main.game.enemies.add(new Enemy(EnemyType.GROWER));
+                if (rnd.nextFloat() <= 0.5) {
+                    for (int i = 0; i < level / 3; i++) {
+                        Main.game.enemies.add(new Enemy(EnemyType.GROWER));
+                    }
                 } else {
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < level / 2; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.MOTHER));
                     }
                 }
@@ -86,26 +88,27 @@ public class LevelDesign {
                 break;
 
             case 15:
-                if(rnd.nextFloat() <= 0.5) {
+                if (rnd.nextFloat() <= 0.5) {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_MOTHER));
                 } else {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_GROWER));
-                    for (int i = 0; i < 10; i++) {
+                    for (int i = 0; i < level; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.BASIC));
                     }
                 }
+                create(rnd.nextInt(level - 6));
                 break;
 
             case 16:
             case 17:
             case 18:
             case 19:
-                if(rnd.nextFloat() <= 0.5){
-                    for (int i = 0; i < 5; i++) {
+                if (rnd.nextFloat() <= 0.5) {
+                    for (int i = 0; i < level / 3; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.MINER));
                     }
                 } else {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < level / 5; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.BEAMER));
                     }
                 }
@@ -113,23 +116,24 @@ public class LevelDesign {
                 break;
 
             case 20:
-                if(rnd.nextFloat() <= 0.5){
+                if (rnd.nextFloat() <= 0.5) {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_MINER));
                 } else {
                     Main.game.enemies.add(new Enemy(EnemyType.BOSS_BEAMER));
                 }
+                create(rnd.nextInt(level - 6));
                 break;
 
             case 21:
             case 22:
             case 23:
             case 24:
-                if(rnd.nextFloat() <= 0.5){
-                    for (int i = 0; i < 5; i++) {
+                if (rnd.nextFloat() <= 0.5) {
+                    for (int i = 0; i < level / 3; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.SNIPER));
                     }
                 } else {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < level / 4; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.BLOWER));
                     }
                 }
@@ -142,25 +146,24 @@ public class LevelDesign {
         if (rnd.nextFloat() <= 0.01) create();
     }
 
-    void createPowerUps() {
-        Main.game.powerUps.add(new PowerUp(PowerUpType.EndLevel));
-
-
-        for (int i = 0; i < level + 1; i++) {
-            while (true) {
-                if (rnd.nextFloat() <= 0.5) {
-                    Main.game.powerUps.add(new PowerUp(PowerUpType.Sp));
-                } else break;
-            }
-            if (rnd.nextFloat() <= Math.pow(0.7, Math.floor(level / 5) + 1)) {
-                Main.game.powerUps.add(new PowerUp(PowerUpType.HpUp));
-            }
-            if(level > 5 && rnd.nextFloat() <= Math.pow(0.8, Math.floor(level / 5) + 1)){
-                Main.game.powerUps.add(new PowerUp(PowerUpType.BombsUp));
-            }
-
+    void createPowerUps(boolean isNormal) {
+        if (isNormal) {
+            Main.game.powerUps.add(new PowerUp(PowerUpType.EndLevel));
         }
 
-        if (rnd.nextFloat() <= 0.01) createPowerUps();
+        for (int i = 0; i < level * level; i++) {
+            if (rnd.nextFloat() <= 0.5) {
+                Main.game.powerUps.add(new PowerUp(PowerUpType.Sp));
+            }
+
+            if (rnd.nextFloat() <= 0.3) {
+                Main.game.powerUps.add(new PowerUp(PowerUpType.HpUp));
+            }
+            if (level > 5 && rnd.nextFloat() <= 0.4) {
+                Main.game.powerUps.add(new PowerUp(PowerUpType.BombsUp));
+            }
+        }
+
+        if (rnd.nextFloat() <= 0.01) createPowerUps(false);
     }
 }

@@ -166,6 +166,7 @@ public class MenuPoints {
     }
 
     void resolve() {
+        int cost;
         switch (type) {
             case RESUME:
                 Main.inGameMenu.active = false;
@@ -210,94 +211,119 @@ public class MenuPoints {
                 break;
 
             case SHOT_RECHARGE:
-                if(Main.player.sp >= Main.player.shotChargeUpCost * (Main.player.shootChargeRate - 9)){
-                    Main.player.sp -= Main.player.shotChargeUpCost * (Main.player.shootChargeRate - 9);
+                cost = Main.player.currShotChargeUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.currShotChargeUpCost += Main.player.shotChargeUpCost;
+                    Main.player.sp -= cost;
                     Main.player.shootChargeRate++;
                 }
                 break;
 
             case SHOT_MAX:
-                if(Main.player.sp >=
-                        Main.player.shotMaxCost * (Main.player.shootChargeMax / Main.player.shootCost - 9)){
-                    Main.player.sp -= Main.player.shotMaxCost * (Main.player.shootChargeMax / Main.player.shootCost - 9);
+                cost = Main.player.currShotMaxCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.currShotMaxCost += Main.player.shotMaxCost;
+                    Main.player.sp -= cost;
                     Main.player.shootChargeMax += Main.player.shootCost;
                 }
                 break;
 
             case SHOTS:
-                if(Main.player.sp >= Main.player.shotsUpCost * Main.player.shootCount){
-                    Main.player.sp -= Main.player.shotsUpCost * Main.player.shootCount;
+                cost = Main.player.currShotsUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.shootCount++;
+                    Main.player.currShotsUpCost += Main.player.shotsUpCost;
                 }
                 break;
 
             case SHOT_SIZE:
-                if(Main.player.sp >= Main.player.shotSizeCost * (Main.player.shotSize / 5 - 1)){
-                    Main.player.sp -= Main.player.shotSizeCost * (Main.player.shotSize / 5 - 1);
+                cost = Main.player.currShotSizeCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.shotSize += 5;
+                    Main.player.currShotSizeCost += Main.player.shotSizeCost;
                 }
                 break;
 
             case SHOT_SPEED:
-                if((double)Main.player.sp >= (double)Main.player.shotSpeedCost * (Main.player.shotSpeed / 0.05 - 7)){
-                    Main.player.sp -= Main.player.shotSpeedCost * (Main.player.shotSpeed / 0.05 - 7);
+                cost = Main.player.currShotSpeedCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.shotSpeed += 0.05;
+                    Main.player.currShotSpeedCost += Main.player.shotSpeedCost;
                 }
                 break;
 
             case SHOT_DAMAGE:
-                if(Main.player.sp >= Main.player.shotDamageCost * Main.player.shotDamage){
-                    Main.player.sp -= Main.player.shotDamageCost * Main.player.shotDamage;
+                cost = Main.player.currShotDamageCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.shotDamage++;
+                    Main.player.currShotDamageCost += Main.player.shotDamageCost;
                 }
                 break;
 
             case BURST:
-                if(Main.player.sp >= Main.player.burstUpCost * (Main.player.burst / 2 - 2)){
-                    Main.player.sp -= Main.player.burstUpCost * (Main.player.burst / 2 - 2);
+                cost = Main.player.currBurstUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.burst += 2;
+                    Main.player.currBurstUpCost += Main.player.burstUpCost;
                 }
                 break;
 
             case STAMINA_RECHARGE:
-                if(Main.player.sp >= Main.player.staminaChargeUpCost * (Main.player.staminaChargeRate / 2 - 4)){
-                    Main.player.sp -= Main.player.staminaChargeUpCost * (Main.player.staminaChargeRate / 2 - 4);
+                cost = Main.player.currStaminaChargeUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.staminaChargeRate += 2;
+                    Main.player.currStaminaChargeUpCost += Main.player.staminaChargeUpCost;
                 }
                 break;
 
             case STAMINA_MAX:
-                if(Main.player.sp >= Main.player.staminaMaxCost * (Main.player.staminaMax / 10000 - 9)){
-                    Main.player.sp -= Main.player.staminaMaxCost * (Main.player.staminaMax / 10000 - 9);
+                cost = Main.player.currStaminaMaxCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.staminaMax += 10000;
+                    Main.player.currStaminaMaxCost += Main.player.staminaMaxCost;
                 }
                 break;
 
             case HEAL:
-                if(Main.player.sp >= Main.player.healUpCost * (Main.player.heal + 1)){
-                    Main.player.sp -= Main.player.healUpCost * (Main.player.heal + 1);
+                cost = Main.player.currHealUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.heal++;
+                    Main.player.currHealUpCost += Main.player.healUpCost;
                 }
                 break;
 
             case SHIELD_RECHARGE:
-                if(Main.player.sp >= Main.player.shieldChargeUpCost * (Main.player.shieldChargeRate - 9)){
-                    Main.player.sp -= Main.player.shieldChargeUpCost * (Main.player.shieldChargeRate - 9);
+                cost = Main.player.currShieldChargeUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.shieldChargeRate++;
+                    Main.player.currShieldChargeUpCost += Main.player.shieldChargeUpCost;
                 }
                 break;
 
             case SHIELD_MAX:
-                if(Main.player.sp >= Main.player.shieldMaxCost * (Main.player.shieldChargeMax / 100000)){
-                    Main.player.sp -= Main.player.shieldMaxCost * (Main.player.shieldChargeMax / 100000);
+                cost = Main.player.currShieldMaxCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.shieldChargeMax += 100000;
+                    Main.player.currShieldMaxCost += Main.player.shieldMaxCost;
                 }
                 break;
 
             case SHIELD_RANGE:
-                if(Main.player.sp >= Main.player.shieldRangeUpCost * (Main.player.shieldRange / 5)){
-                    Main.player.sp -= Main.player.shieldRangeUpCost * (Main.player.shieldRange / 5);
+                cost = Main.player.currShieldRangeUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.shieldRange += 5;
+                    Main.player.currShieldRangeUpCost += Main.player.shieldRangeUpCost;
                 }
                 break;
 
@@ -306,44 +332,56 @@ public class MenuPoints {
                 break;
 
             case BOMB_RECHARGE:
-                if(Main.player.sp >= Main.player.bombChargeUpCost * (Main.player.bombRecharge + 1)){
-                    Main.player.sp -= Main.player.bombChargeUpCost * (Main.player.bombRecharge + 1);
+                cost = Main.player.currBombChargeUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.bombRecharge++;
+                    Main.player.currBombChargeUpCost += Main.player.bombChargeUpCost;
                 }
                 break;
 
             case BOMB_RANGE:
-                if(Main.player.sp >= Main.player.bombRangeUpCost * (Main.player.bombRange / 20 - 9)){
-                    Main.player.sp -= Main.player.bombRangeUpCost * (Main.player.bombRange / 20 - 9);
+                cost = Main.player.currBombRangeUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.bombRange += 20;
+                    Main.player.currBombRangeUpCost += Main.player.bombRangeUpCost;
                 }
                 break;
 
             case BOMB_DAMAGE:
-                if(Main.player.sp >= Main.player.bombDamageUpCost * Main.player.bombDamage){
-                    Main.player.sp -= Main.player.bombDamageUpCost * Main.player.bombDamage;
+                cost = Main.player.currBombDamageUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.bombDamage++;
+                    Main.player.currBombDamageUpCost += Main.player.bombDamageUpCost;
                 }
                 break;
 
             case STOMP_DAMAGE:
-                if(Main.player.sp >= Main.player.stompDamageUpCost * Main.player.stompDamage){
-                    Main.player.sp -= Main.player.stompDamageUpCost * (Main.player.stompDamage + 1);
+                cost = Main.player.currStompDamageUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.stompDamage++;
+                    Main.player.currStompDamageUpCost += Main.player.stompDamageUpCost;
                 }
                 break;
 
             case STOMP_RANGE:
-                if(Main.player.sp >= Main.player.stompRangeUpCost * (Main.player.stompRange / 10)){
-                    Main.player.sp -= Main.player.stompRangeUpCost * (Main.player.stompRange / 10);
+                cost = Main.player.currStompRangeUpCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.stompRange += 10;
+                    Main.player.currStompRangeUpCost += Main.player.stompRangeUpCost;
                 }
                 break;
 
             case STOMP_COST:
-                if(Main.player.sp >= Main.player.stompCheaperCost * ((101000 - Main.player.stompCost) / 1000)){
-                    Main.player.sp -= Main.player.stompCheaperCost * ((101000 - Main.player.stompCost) / 1000);
+                cost = Main.player.currStompCheaperCost;
+                if (Main.player.sp >= cost) {
+                    Main.player.sp -= cost;
                     Main.player.stompCost -= 1000;
+                    Main.player.currStompCheaperCost += Main.player.stompCheaperCost;
                 }
                 break;
         }

@@ -34,279 +34,207 @@ public class Game {
         waitWhileMenuActive(Main.mainMenu);
 
         if (Main.mode == 0) {
-            int nextBasic = rnd.nextInt(1000) + 1000;
-            int nextEater = rnd.nextInt(10000) + 2000;
-            int nextCharger = rnd.nextInt(2000) + 5000;
-            int nextShooter = rnd.nextInt(20000) + 1000;
-            int nexGrower = rnd.nextInt(10000) + 10000;
-
-            int nextHpUp = rnd.nextInt(2000) + 4000;
-            int nextShotsUp = rnd.nextInt(10000) + 10000;
-
             for (int i = 0; i < 3; i++) {
                 enemies.add(new Enemy(EnemyType.BASIC));
             }
 
+            int nextLevelUp = rnd.nextInt(5000) + 5000;
 
             for (tick = 0; Main.player.hp > 0; tick++) {
-                currState = controllers.getState(0);
-                if (!currState.isConnected) break;
-
-                if (tick == nextBasic) {
-                    enemies.add(new Enemy(EnemyType.BASIC));
-                    nextBasic += rnd.nextInt(1000) + 1000;
-                }
-                if (tick == nextEater) {
-                    enemies.add(new Enemy(EnemyType.EATER));
-                    nextEater += rnd.nextInt(10000) + 2000;
-                }
-                if (tick == nextCharger) {
-                    enemies.add(new Enemy(EnemyType.CHARGER));
-                    nextCharger += rnd.nextInt(2000) + 5000;
-                }
-                if (tick == nextShooter) {
-                    enemies.add(new Enemy(EnemyType.SHOOTER));
-                    nextShooter += rnd.nextInt(20000) + 1000;
-                }
-                if (tick == nexGrower) {
-                    enemies.add(new Enemy(EnemyType.GROWER));
-                    nexGrower += rnd.nextInt(10000) + 10000;
+                if(tick == nextLevelUp){
+                    nextLevelUp += rnd.nextInt(5000) + 5000;
+                    levelDesign.level++;
+                    levelDesign.createPowerUps(false);
                 }
 
-                if (tick == nextHpUp) {
-                    powerUps.add(new PowerUp(PowerUpType.HpUp));
-                    nextHpUp += rnd.nextInt(2000) + 4000;
-                }
-                if (tick == nextShotsUp) {
-                    powerUps.add(new PowerUp(PowerUpType.ShotsUp));
-                    nextShotsUp += rnd.nextInt(10000) + 10000;
-                }
-
-
-                if (currState.backJustPressed) {
-                    Main.inGameMenu.active = true;
-                }
-                while (Main.inGameMenu.active) {
-                    currState = controllers.getState(0);
-                    if (currState.aJustPressed) {
-                        Main.inGameMenu.menuPoints.get(Main.inGameMenu.selected).resolve();
-                    }
-                    if (currState.dpadDownJustPressed) {
-                        Main.inGameMenu.selected++;
-                        if (Main.inGameMenu.selected >= Main.inGameMenu.menuPoints.size())
-                            Main.inGameMenu.selected = Main.inGameMenu.menuPoints.size() - 1;
-                    }
-                    if (currState.dpadUpJustPressed) {
-                        Main.inGameMenu.selected--;
-                        if (Main.inGameMenu.selected < 0) {
-                            Main.inGameMenu.selected = 0;
-                        }
-                    }
-
-                    Display.refresh();
-                }
-
-                Main.player.dir = currState.leftStickAngle;
-                if (currState.rightTrigger == 1) Main.player.fast = true;
-                else Main.player.fast = false;
-                if (currState.leftTrigger == 0) Main.player.move();
-                Main.player.moveMissiles();
-                eatPowerUps();
-                moveEnemies();
-                moveEnemyMissiles();
-                explodeBombs();
-                killPlayer();
-                killEnemies();
-
-                if (currState.xJustPressed) Main.player.shoot();
-
-                Display.refresh();
+                resolveControls();
             }
 
-            gameOver = true;
-            Display.refresh();
+            resolveGameOver();
 
-            if (Main.infinite) {
-                while (true) {
-                    ControllerState currState = controllers.getState(0);
-                    if (currState.yJustPressed) restart();
-                }
-            }
         } else if (Main.mode == 1) {
             levelDesign.create();
 
             for (tick = 0; Main.player.hp > 0; tick++) {
-                long time = System.currentTimeMillis();
-
-                currState = controllers.getState(0);
-
-                if (currState.isConnected) {
-                    if (currState.startJustPressed) {
-                        Main.inGameMenu.active = true;
-                    }
-                } else {
-                    if (keyEvent != null && keyEvent.getKeyChar() == '\u001B') {
-                        Main.inGameMenu.active = true;
-                        keyEvent = null;
-                    }
-                }
-                waitWhileMenuActive(Main.inGameMenu);
-
-                if (currState.isConnected) {
-                    if (currState.backJustPressed) {
-                        Main.skillMenu.active = true;
-                    }
-                } else {
-                    if (keyEvent != null && keyEvent.getKeyChar() == '\t') {
-                        Main.skillMenu.active = true;
-                        keyEvent = null;
-                    }
-                }
-                while (Main.skillMenu.active) {
-                    currState = controllers.getState(0);
-
-                    if (currState.isConnected) {
-                        if (currState.bJustPressed) {
-                            Main.skillMenu.active = false;
-                        }
-                        if (currState.aJustPressed) {
-                            Main.skillMenu.menuPoints.get(Main.skillMenu.selected).resolve();
-                        }
-                        if (currState.dpadDownJustPressed) {
-                            Main.skillMenu.selected++;
-                            if (Main.skillMenu.selected >= Main.skillMenu.menuPoints.size())
-                                Main.skillMenu.selected = Main.skillMenu.menuPoints.size() - 1;
-                        }
-                        if (currState.dpadUpJustPressed) {
-                            Main.skillMenu.selected--;
-                            if (Main.skillMenu.selected < 0) {
-                                Main.skillMenu.selected = 0;
-                            }
-                        }
-                    } else {
-                        if (keyEvent != null && keyEvent.getKeyChar() == '\u001B') {
-                            Main.skillMenu.active = false;
-                            keyEvent = null;
-                        }
-                        if (keyEvent != null && (keyEvent.getKeyChar() == '\n' || keyEvent.getKeyChar() == ' ')) {
-                            Main.skillMenu.menuPoints.get(Main.skillMenu.selected).resolve();
-                            keyEvent = null;
-                        }
-                        if (keyEvent != null && keyEvent.getKeyChar() == 's') {
-                            Main.skillMenu.selected++;
-                            if (Main.skillMenu.selected >= Main.skillMenu.menuPoints.size()) {
-                                Main.skillMenu.selected = Main.skillMenu.menuPoints.size() - 1;
-                            }
-                            keyEvent = null;
-                        }
-                        if (keyEvent != null && keyEvent.getKeyChar() == 'w') {
-                            Main.skillMenu.selected--;
-                            if (Main.skillMenu.selected < 0) {
-                                Main.skillMenu.selected = 0;
-                            }
-                            keyEvent = null;
-                        }
-                    }
-
-                    Display.refresh();
-
-                    waitWhileMenuActive(Main.shotUpg);
-                    waitWhileMenuActive(Main.staminaUpg);
-                    waitWhileMenuActive(Main.bombUpg);
-                    waitWhileMenuActive(Main.shieldUpg);
-                    waitWhileMenuActive(Main.stompUpg);
-                }
-
-                if (currState.isConnected) {
-                    Main.player.dir = currState.leftStickAngle;
-                    if (currState.rightTrigger == 1) Main.player.fast = true;
-                    else Main.player.fast = false;
-                    if (currState.bJustPressed) Main.player.deployBomb();
-                    if (currState.lbJustPressed) Main.player.pickUpAllPowerUps();
-                    if (currState.yJustPressed) Main.player.burst();
-                    if (currState.aJustPressed) Main.player.stomp();
-                } else {
-                    int mouseX = MouseInfo.getPointerInfo().getLocation().x;
-                    int mouseY = MouseInfo.getPointerInfo().getLocation().y;
-                    int frameX = Display.frame.getLocationOnScreen().x;
-                    int frameY = Display.frame.getLocationOnScreen().y;
-                    int x = mouseX - frameX;
-                    int y = mouseY - frameY;
-
-                    Main.player.dir = getDir(Main.player.posX, Main.player.posY, x, y);
-
-                    if (keyEvent != null && keyEvent.isShiftDown()) {
-                        Main.player.fast = true;
-                    } else {
-                        Main.player.fast = false;
-                    }
-                    if (keyEvent != null && keyEvent.getKeyChar() == 'c') {
-                        Main.player.deployBomb();
-                        keyEvent = null;
-                    }
-                    if (keyEvent != null && keyEvent.getKeyChar() == '\b') {
-                        Main.player.pickUpAllPowerUps();
-                        keyEvent = null;
-                    }
-                    if (keyEvent != null && keyEvent.getKeyChar() == 'z') {
-                        Main.player.burst();
-                        keyEvent = null;
-                    }
-                    if (keyEvent != null && keyEvent.getKeyChar() == ' ') {
-                        Main.player.stomp();
-                        keyEvent = null;
-                    }
-                }
-
-                Main.player.move();
-                Main.player.moveMissiles();
-                Main.player.explodeBombs();
-                Main.player.shield.adjust();
-                if (Main.player.stomping) Main.player.stomp.stomp();
-                eatPowerUps();
-                moveEnemies();
-                moveEnemyMissiles();
-                explodeBombs();
-                killShield();
-                killPlayer();
-                killEnemies();
-
-                if (currState.isConnected) {
-                    if (currState.xJustPressed) Main.player.shoot();
-                } else {
-                    if ((keyEvent != null && keyEvent.getKeyChar() == 'x') || mousePressed) {
-                        Main.player.shoot();
-                        keyEvent = null;
-                        mousePressed = false;
-                    }
-                }
-
-                Display.refresh();
-
-                while (System.currentTimeMillis() - time < 2) {
-                }
+                resolveControls();
             }
 
-            gameOver = true;
-            Display.refresh();
-
-            if (Main.infinite) {
-                while (true) {
-                    ControllerState currState = controllers.getState(0);
-                    if(currState.isConnected){
-                        if (currState.aJustPressed) restart();
-                    } else {
-                        if(keyEvent != null && keyEvent.getKeyChar() == ' '){
-                            restart();
-                            keyEvent = null;
-                        }
-                    }
-                }
-            }
+            resolveGameOver();
         }
 
         Display.frame.dispose();
         controllers.quitSDLGamepad();
+    }
+
+    void resolveControls() {
+        long time = System.currentTimeMillis();
+
+        currState = controllers.getState(0);
+
+        if (currState.isConnected) {
+            if (currState.startJustPressed) {
+                Main.inGameMenu.active = true;
+            }
+        } else {
+            if (keyEvent != null && keyEvent.getKeyChar() == '\u001B') {
+                Main.inGameMenu.active = true;
+                keyEvent = null;
+            }
+        }
+        waitWhileMenuActive(Main.inGameMenu);
+
+        if (currState.isConnected) {
+            if (currState.backJustPressed) {
+                Main.skillMenu.active = true;
+            }
+        } else {
+            if (keyEvent != null && keyEvent.getKeyChar() == '\t') {
+                Main.skillMenu.active = true;
+                keyEvent = null;
+            }
+        }
+        while (Main.skillMenu.active) {
+            currState = controllers.getState(0);
+
+            if (currState.isConnected) {
+                if (currState.bJustPressed) {
+                    Main.skillMenu.active = false;
+                }
+                if (currState.aJustPressed) {
+                    Main.skillMenu.menuPoints.get(Main.skillMenu.selected).resolve();
+                }
+                if (currState.dpadDownJustPressed) {
+                    Main.skillMenu.selected++;
+                    if (Main.skillMenu.selected >= Main.skillMenu.menuPoints.size())
+                        Main.skillMenu.selected = Main.skillMenu.menuPoints.size() - 1;
+                }
+                if (currState.dpadUpJustPressed) {
+                    Main.skillMenu.selected--;
+                    if (Main.skillMenu.selected < 0) {
+                        Main.skillMenu.selected = 0;
+                    }
+                }
+            } else {
+                if (keyEvent != null && keyEvent.getKeyChar() == '\u001B') {
+                    Main.skillMenu.active = false;
+                    keyEvent = null;
+                }
+                if (keyEvent != null && (keyEvent.getKeyChar() == '\n' || keyEvent.getKeyChar() == ' ')) {
+                    Main.skillMenu.menuPoints.get(Main.skillMenu.selected).resolve();
+                    keyEvent = null;
+                }
+                if (keyEvent != null && keyEvent.getKeyChar() == 's') {
+                    Main.skillMenu.selected++;
+                    if (Main.skillMenu.selected >= Main.skillMenu.menuPoints.size()) {
+                        Main.skillMenu.selected = Main.skillMenu.menuPoints.size() - 1;
+                    }
+                    keyEvent = null;
+                }
+                if (keyEvent != null && keyEvent.getKeyChar() == 'w') {
+                    Main.skillMenu.selected--;
+                    if (Main.skillMenu.selected < 0) {
+                        Main.skillMenu.selected = 0;
+                    }
+                    keyEvent = null;
+                }
+            }
+
+            Display.refresh();
+
+            waitWhileMenuActive(Main.shotUpg);
+            waitWhileMenuActive(Main.staminaUpg);
+            waitWhileMenuActive(Main.bombUpg);
+            waitWhileMenuActive(Main.shieldUpg);
+            waitWhileMenuActive(Main.stompUpg);
+        }
+
+        if (currState.isConnected) {
+            Main.player.dir = currState.leftStickAngle;
+            if (currState.rightTrigger == 1) Main.player.fast = true;
+            else Main.player.fast = false;
+            if (currState.bJustPressed) Main.player.deployBomb();
+            if (currState.lbJustPressed) Main.player.pickUpAllPowerUps();
+            if (currState.yJustPressed) Main.player.burst();
+            if (currState.aJustPressed) Main.player.stomp();
+        } else {
+            int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+            int mouseY = MouseInfo.getPointerInfo().getLocation().y;
+            int frameX = Display.frame.getLocationOnScreen().x;
+            int frameY = Display.frame.getLocationOnScreen().y;
+            int x = mouseX - frameX;
+            int y = mouseY - frameY;
+
+            Main.player.dir = getDir(Main.player.posX, Main.player.posY, x, y);
+
+            if (keyEvent != null && keyEvent.isShiftDown()) {
+                Main.player.fast = true;
+            } else {
+                Main.player.fast = false;
+            }
+            if (keyEvent != null && keyEvent.getKeyChar() == 'c') {
+                Main.player.deployBomb();
+                keyEvent = null;
+            }
+            if (keyEvent != null && keyEvent.getKeyChar() == '\b') {
+                Main.player.pickUpAllPowerUps();
+                keyEvent = null;
+            }
+            if (keyEvent != null && keyEvent.getKeyChar() == 'z') {
+                Main.player.burst();
+                keyEvent = null;
+            }
+            if (keyEvent != null && keyEvent.getKeyChar() == ' ') {
+                Main.player.stomp();
+                keyEvent = null;
+            }
+        }
+
+        Main.player.move();
+        Main.player.moveMissiles();
+        Main.player.explodeBombs();
+        Main.player.shield.adjust();
+        if (Main.player.stomping) Main.player.stomp.stomp();
+        eatPowerUps();
+        moveEnemies();
+        moveEnemyMissiles();
+        explodeBombs();
+        killShield();
+        killPlayer();
+        killEnemies();
+
+        if (currState.isConnected) {
+            if (currState.xJustPressed) Main.player.shoot();
+        } else {
+            if ((keyEvent != null && keyEvent.getKeyChar() == 'x') || mousePressed) {
+                Main.player.shoot();
+                keyEvent = null;
+                mousePressed = false;
+            }
+        }
+
+        Display.refresh();
+
+        while (System.currentTimeMillis() - time < 2) {
+        }
+    }
+
+    void resolveGameOver() {
+        gameOver = true;
+        Display.refresh();
+
+        if (Main.infinite) {
+            while (true) {
+                ControllerState currState = controllers.getState(0);
+                if(currState.isConnected){
+                    if (currState.aJustPressed) restart();
+                } else {
+                    if(keyEvent != null && keyEvent.getKeyChar() == ' '){
+                        restart();
+                        keyEvent = null;
+                    }
+                }
+            }
+        }
     }
 
     void eatPowerUps() {
@@ -474,7 +402,7 @@ public class Game {
 
                 enemies.remove(index);
                 if (Main.mode == 1 && enemies.size() == 0) {
-                    levelDesign.createPowerUps();
+                    levelDesign.createPowerUps(true);
                 }
             }
         }

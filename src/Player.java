@@ -49,7 +49,7 @@ public class Player extends Entity {
     int stompRange = 10;
     int stompCost = 100000;
 
-    int sp = 0;
+    int sp = 100;
 
     int heal = 0;
 
@@ -66,21 +66,45 @@ public class Player extends Entity {
     int shotDamageCost = 10;
     int burstUpCost = 6;
 
+    int currShotChargeUpCost = 1;
+    int currShotMaxCost = 1;
+    int currShotsUpCost = 20;
+    int currShotSizeCost = 3;
+    int currShotSpeedCost = 3;
+    int currShotDamageCost = 10;
+    int currBurstUpCost = 6;
+
     int staminaChargeUpCost = 1;
     int staminaMaxCost = 1;
     int healUpCost = 6;
+
+    int currStaminaChargeUpCost = 1;
+    int currStaminaMaxCost = 1;
+    int currHealUpCost = 6;
 
     int bombChargeUpCost = 3;
     int bombRangeUpCost = 1;
     int bombDamageUpCost = 10;
 
+    int currBombChargeUpCost = 3;
+    int currBombRangeUpCost = 1;
+    int currBombDamageUpCost = 10;
+
     int shieldChargeUpCost = 1;
     int shieldMaxCost = 5;
     int shieldRangeUpCost = 1;
 
+    int currShieldChargeUpCost = 1;
+    int currShieldMaxCost = 5;
+    int currShieldRangeUpCost = 1;
+
     int stompDamageUpCost = 5;
     int stompRangeUpCost = 2;
     int stompCheaperCost = 1;
+
+    int currStompDamageUpCost = 5;
+    int currStompRangeUpCost = 2;
+    int currStompCheaperCost = 1;
 
     int burst = 6;
 

@@ -382,115 +382,115 @@ public class Display {
             switch (menuPoints.type) {
                 case MenuPoints.SHOT_RECHARGE:
                     text += " (";
-                    text += Main.player.shotChargeUpCost * (Main.player.shootChargeRate - 9);
+                    text += Main.player.currShotChargeUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHOT_MAX:
                     text += " (";
-                    text += Main.player.shotMaxCost * (Main.player.shootChargeMax / Main.player.shootCost - 9);
+                    text += Main.player.currShotMaxCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHOTS:
                     text += " (";
-                    text += Main.player.shotsUpCost * Main.player.shootCount;
+                    text += Main.player.currShotsUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHOT_SIZE:
                     text += " (";
-                    text += Main.player.shotSizeCost * (Main.player.shotSize / 5 - 1);
+                    text += Main.player.currShotSizeCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHOT_SPEED:
                     text += " (";
-                    text += Main.player.shotSpeedCost * (int) (Main.player.shotSpeed / 0.05 - 7);
+                    text += Main.player.currShotSpeedCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHOT_DAMAGE:
                     text += " (";
-                    text += Main.player.shotDamageCost * Main.player.shotDamage;
+                    text += Main.player.currShotDamageCost;
                     text += ")";
                     break;
 
                 case MenuPoints.BURST:
                     text += " (";
-                    text += Main.player.burstUpCost * (Main.player.burst / 2 - 2);
+                    text += Main.player.currBurstUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.STAMINA_RECHARGE:
                     text += " (";
-                    text += Main.player.staminaChargeUpCost * (Main.player.staminaChargeRate / 2 - 4);
+                    text += Main.player.currStaminaChargeUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.STAMINA_MAX:
                     text += " (";
-                    text += Main.player.staminaMaxCost * (Main.player.staminaMax / 10000 - 9);
+                    text += Main.player.currStaminaMaxCost;
                     text += ")";
                     break;
 
                 case MenuPoints.HEAL:
                     text += " (";
-                    text += Main.player.healUpCost * (Main.player.heal + 1);
+                    text += Main.player.currHealUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHIELD_RECHARGE:
                     text += " (";
-                    text += Main.player.shieldChargeUpCost * (Main.player.shieldChargeRate - 9);
+                    text += Main.player.currShieldChargeUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHIELD_MAX:
                     text += " (";
-                    text += Main.player.shieldMaxCost * (Main.player.shieldChargeMax / 100000);
+                    text += Main.player.currShieldMaxCost;
                     text += ")";
                     break;
 
                 case MenuPoints.SHIELD_RANGE:
                     text += " (";
-                    text += Main.player.shieldRangeUpCost * (Main.player.shieldRange / 5);
+                    text += Main.player.currShieldRangeUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.BOMB_RECHARGE:
                     text += " (";
-                    text += Main.player.bombChargeUpCost * (Main.player.bombRecharge + 1);
+                    text += Main.player.currBombChargeUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.BOMB_RANGE:
                     text += " (";
-                    text += Main.player.bombRangeUpCost * (Main.player.bombRange / 20 - 9);
+                    text += Main.player.currBombRangeUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.BOMB_DAMAGE:
                     text += " (";
-                    text += Main.player.bombDamageUpCost * Main.player.bombDamage;
+                    text += Main.player.currBombDamageUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.STOMP_DAMAGE:
                     text += " (";
-                    text += Main.player.stompDamageUpCost * Main.player.stompDamage;
+                    text += Main.player.currStompDamageUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.STOMP_RANGE:
                     text += " (";
-                    text += Main.player.stompRangeUpCost * (Main.player.stompRange / 10);
+                    text += Main.player.currStompRangeUpCost;
                     text += ")";
                     break;
 
                 case MenuPoints.STOMP_COST:
                     text += " (";
-                    text += Main.player.stompCheaperCost * ((101000 - Main.player.stompCost) / 1000);
+                    text += Main.player.currStompCheaperCost;
                     text += ")";
                     break;
             }
