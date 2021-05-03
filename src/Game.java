@@ -41,7 +41,7 @@ public class Game {
             int nextLevelUp = rnd.nextInt(5000) + 5000;
 
             for (tick = 0; Main.player.hp > 0; tick++) {
-                if(tick == nextLevelUp){
+                if (tick == nextLevelUp) {
                     nextLevelUp += rnd.nextInt(5000) + 5000;
                     levelDesign.level++;
                     levelDesign.createPowerUps(false);
@@ -164,7 +164,7 @@ public class Game {
             int x = mouseX - frameX;
             int y = mouseY - frameY;
 
-            Main.player.dir = getDir(Main.player.posX, Main.player.posY, x, y);
+            Main.player.dir = getDir(Main.player.posX, Main.player.posY + Main.player.r / 2, x, y);
 
             if (keyEvent != null && keyEvent.isShiftDown()) {
                 Main.player.fast = true;
@@ -225,10 +225,10 @@ public class Game {
         if (Main.infinite) {
             while (true) {
                 ControllerState currState = controllers.getState(0);
-                if(currState.isConnected){
+                if (currState.isConnected) {
                     if (currState.aJustPressed) restart();
                 } else {
-                    if(keyEvent != null && keyEvent.getKeyChar() == ' '){
+                    if (keyEvent != null && keyEvent.getKeyChar() == ' ') {
                         restart();
                         keyEvent = null;
                     }
@@ -300,7 +300,7 @@ public class Game {
         for (Enemy enemy1 : enemies) {
             if (enemy1.type == EnemyType.EATER) {
                 for (Enemy enemy2 : enemies) {
-                    if (enemy2.id != enemy1.id
+                    if (enemy2.id != enemy1.id && enemy2.type != EnemyType.GROWER && !enemy2.isBoss()
                             && distance(enemy1.posX, enemy1.posY, enemy2.posX, enemy2.posY)
                             <= enemy1.r / 2f + enemy2.r / 2f) {
                         if (enemy1.r < enemy2.r && enemy2.type == EnemyType.EATER) {
@@ -325,7 +325,8 @@ public class Game {
         for (Enemy enemy1 : enemies) {
             if (enemy1.type == EnemyType.BOSS_EATER) {
                 for (Enemy enemy2 : enemies) {
-                    if (enemy1.id != enemy2.id && distance(enemy1.posX, enemy1.posY, enemy2.posX, enemy2.posY)
+                    if (enemy1.id != enemy2.id && enemy2.type != EnemyType.BOSS_GROWER
+                            && distance(enemy1.posX, enemy1.posY, enemy2.posX, enemy2.posY)
                             <= enemy1.r / 2f + enemy2.r / 2f) {
                         enemy1.hp += enemy2.hp * 5;
                         enemy2.hp = 0;
@@ -337,17 +338,42 @@ public class Game {
             }
         }
 
-        //grower & boss grower
+        //grower
         for (Enemy enemy1 : enemies) {
-            if (enemy1.type == EnemyType.GROWER || enemy1.type == EnemyType.BOSS_GROWER) {
+            if (enemy1.type == EnemyType.GROWER) {
+                for (Enemy enemy2 : enemies) {
+                    if (enemy2.id != enemy1.id && !enemy2.isBoss()
+                            && distance(enemy1.posX, enemy1.posY, enemy2.posX, enemy2.posY)
+                            <= enemy1.r / 2f + enemy2.r / 2f) {
+
+                        if (enemy1.r < enemy2.r && enemy2.type == EnemyType.GROWER) {
+                            enemy2.hp += enemy1.hp;
+                            enemy1.hp = 0;
+
+                            enemy2.r += enemy1.r / 2;
+                        } else {
+                            enemy1.hp += enemy2.hp;
+                            enemy2.hp = 0;
+
+                            enemy1.r += enemy2.r / 2;
+                        }
+                    }
+                }
+            }
+        }
+
+        //boss grower
+        for (Enemy enemy1 : enemies) {
+            if (enemy1.type == EnemyType.BOSS_GROWER) {
                 for (Enemy enemy2 : enemies) {
                     if (enemy2.id != enemy1.id
                             && distance(enemy1.posX, enemy1.posY, enemy2.posX, enemy2.posY)
                             <= enemy1.r / 2f + enemy2.r / 2f) {
-                        enemy1.hp += enemy2.hp;
+
+                        enemy1.hp += enemy2.hp * 5;
                         enemy2.hp = 0;
 
-                        enemy1.r += enemy2.r / 2;
+                        enemy1.r += enemy2.r * 2 / 3;
                     }
                 }
             }
@@ -420,14 +446,14 @@ public class Game {
             if (enemy.type == EnemyType.BEAMER) {
                 if (Math.abs(Main.player.posX - enemy.posX) <= Main.player.r / 2.0
                         || Math.abs(Main.player.posY - enemy.posY) <= Main.player.r / 2.0) {
-                    if (tick % 50 == 0) Main.player.hp--;
+                    if (tick % 50 == 0) Main.player.hp -= (Main.game.levelDesign.level - 1) / 5 - 1;
                 }
             }
 
             if (enemy.type == EnemyType.BOSS_BEAMER) {
                 if (Math.abs(Main.player.posX - enemy.posX) <= Main.player.r / 2.0 - 10
                         || Math.abs(Main.player.posY - enemy.posY) <= Main.player.r / 2.0 - 10) {
-                    if (tick % 10 == 0) Main.player.hp--;
+                    if (tick % 10 == 0) Main.player.hp -= (Main.game.levelDesign.level - 1) / 5 - 1;
                 }
             }
         }
@@ -436,7 +462,7 @@ public class Game {
             if (distance(Main.player.posX, Main.player.posY, missile.posX, missile.posY)
                     <= Main.player.r / 2f + missile.r / 2f) {
                 missile.outOfBound = true;
-                Main.player.hp--;
+                Main.player.hp -= (Main.game.levelDesign.level - 1) / 5;
                 controllers.doVibration(0, 1f, 1f, 1000);
             }
         }
@@ -471,7 +497,7 @@ public class Game {
             if (distance(Main.player.shield.posX, Main.player.shield.posY, missile.posX, missile.posY)
                     <= Main.player.shield.r / 2f + missile.r / 2f) {
                 missile.outOfBound = true;
-                Main.player.shieldCharge -= 100000;
+                Main.player.shieldCharge -= 100000 * ((Main.game.levelDesign.level - 1) / 5);
                 controllers.doVibration(0, 1f, 1f, 1000);
             }
         }
@@ -601,5 +627,13 @@ public class Game {
             Display.refresh();
         }
 
+    }
+
+    static boolean hasEnemy(EnemyType type) {
+        for (Enemy enemy : Main.game.enemies) {
+            if (enemy.type == type) return true;
+        }
+
+        return false;
     }
 }

@@ -246,10 +246,10 @@ public class Enemy extends Entity {
 
             case GROWER:
                 lifeSpan++;
-                if (lifeSpan % 200 == 0) {
-                    r += 2;
+                if (lifeSpan % 40 == 0) {
+                    r++;
                 }
-                if (lifeSpan >= 1000) {
+                if (lifeSpan >= 200) {
                     lifeSpan = 0;
                     hp++;
                 }
@@ -257,10 +257,10 @@ public class Enemy extends Entity {
 
             case BOSS_GROWER:
                 lifeSpan++;
-                if (lifeSpan % 100 == 0) {
-                    r += 2;
+                if (lifeSpan % 20 == 0) {
+                    r++;
                 }
-                if (lifeSpan >= 500) {
+                if (lifeSpan >= 100) {
                     lifeSpan = 0;
                     hp++;
                 }
@@ -374,5 +374,12 @@ public class Enemy extends Entity {
         }
 
         return pos;
+    }
+
+    boolean isBoss(){
+        return type == EnemyType.BOSS_BASIC || type == EnemyType.BOSS_EATER ||
+                type == EnemyType.BOSS_SHOOTER || type == EnemyType.BOSS_CHARGER ||
+                type == EnemyType.BOSS_GROWER || type == EnemyType.BOSS_MOTHER ||
+                type == EnemyType.BOSS_MINER || type == EnemyType.BOSS_BEAMER;
     }
 }

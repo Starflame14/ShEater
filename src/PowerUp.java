@@ -54,8 +54,8 @@ public class PowerUp extends Entity{
                 Main.player.shootCharge = Main.player.shootChargeMax;
                 Main.player.shieldCharge = Main.player.shieldChargeMax;
 
-                Main.player.hp += Main.player.heal;
-                Main.player.bombCount += Main.player.bombRecharge;
+                Main.player.hp += Main.player.heal * ((Main.game.levelDesign.level - 1) / 5 + 1);
+                Main.player.bombCount += Main.player.bombRecharge * (Main.game.levelDesign.level - 1) / 5 + 1;
 
                 Main.game.levelDesign.level++;
                 Main.game.levelDesign.create();
@@ -94,7 +94,7 @@ public class PowerUp extends Entity{
                 break;
 
             case Mine:
-                Main.player.hp -= 3;
+                Main.player.hp -= (Main.game.levelDesign.level - 1) / 5 * 2;
                 break;
         }
     }

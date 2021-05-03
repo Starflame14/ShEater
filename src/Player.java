@@ -49,7 +49,8 @@ public class Player extends Entity {
     int stompRange = 10;
     int stompCost = 100000;
 
-    int sp = 100;
+    int sp = 0;
+    int spent = 0;
 
     int heal = 0;
 
@@ -219,7 +220,9 @@ public class Player extends Entity {
 
     void pickUpAllPowerUps() {
         for (PowerUp powerUp : Main.game.powerUps) {
-            powerUp.eat();
+            if(powerUp.type != PowerUpType.EndLevel){
+                powerUp.eat();
+            }
         }
     }
 
@@ -231,6 +234,43 @@ public class Player extends Entity {
 
             stomping = true;
         }
+    }
+
+    //TODO balance testing
+    void spendSp(int cost){
+        sp -= cost;
+
+        int currPenalty = spent / 10;
+
+        spent += cost;
+
+        /*
+        int penalty = spent / 10 - currPenalty;
+
+        currShotChargeUpCost += penalty;
+        currShotMaxCost += penalty;
+        currShotsUpCost += penalty;
+        currShotSizeCost += penalty;
+        currShotSpeedCost += penalty;
+        currShotDamageCost += penalty;
+        currBurstUpCost += penalty;
+
+        currStaminaChargeUpCost += penalty;
+        currStaminaMaxCost += penalty;
+        currHealUpCost += penalty;
+
+        currBombChargeUpCost += penalty;
+        currBombRangeUpCost += penalty;
+        currBombDamageUpCost += penalty;
+
+        currShieldChargeUpCost += penalty;
+        currShieldMaxCost += penalty;
+        currShieldRangeUpCost += penalty;
+
+        currStompDamageUpCost += penalty;
+        currStompRangeUpCost += penalty;
+        currStompCheaperCost += penalty;
+        */
     }
 }
 

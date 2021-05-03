@@ -21,7 +21,8 @@ public class LevelDesign {
             case 2:
             case 3:
             case 4:
-                if (rnd.nextFloat() <= 0.5) {
+                if (rnd.nextFloat() <= 0.5 ||
+                        Game.hasEnemy(EnemyType.CHARGER) || Game.hasEnemy(EnemyType.BOSS_CHARGER)) {
                     for (int i = 0; i < 8 + level * 2; i++) {
                         Main.game.enemies.add(new Enemy(EnemyType.BASIC));
                     }
@@ -151,14 +152,18 @@ public class LevelDesign {
             Main.game.powerUps.add(new PowerUp(PowerUpType.EndLevel));
         }
 
-        for (int i = 0; i < level * level; i++) {
-            if (rnd.nextFloat() <= 0.5) {
+        for (int i = 0; i < level + 1; i++) {
+            if (rnd.nextFloat() <= 0.8) {
+                Main.game.powerUps.add(new PowerUp(PowerUpType.Sp));
+            }
+            if (rnd.nextFloat() <= 0.2) {
                 Main.game.powerUps.add(new PowerUp(PowerUpType.Sp));
             }
 
             if (rnd.nextFloat() <= 0.3) {
                 Main.game.powerUps.add(new PowerUp(PowerUpType.HpUp));
             }
+
             if (level > 5 && rnd.nextFloat() <= 0.4) {
                 Main.game.powerUps.add(new PowerUp(PowerUpType.BombsUp));
             }

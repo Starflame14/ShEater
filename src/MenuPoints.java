@@ -167,6 +167,7 @@ public class MenuPoints {
 
     void resolve() {
         int cost;
+        int tier = (Main.game.levelDesign.level - 1) / 5 + 1;
         switch (type) {
             case RESUME:
                 Main.inGameMenu.active = false;
@@ -213,25 +214,25 @@ public class MenuPoints {
             case SHOT_RECHARGE:
                 cost = Main.player.currShotChargeUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.currShotChargeUpCost += Main.player.shotChargeUpCost;
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shootChargeRate++;
+                    Main.player.currShotChargeUpCost += Main.player.shotChargeUpCost;
                 }
                 break;
 
             case SHOT_MAX:
                 cost = Main.player.currShotMaxCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.currShotMaxCost += Main.player.shotMaxCost;
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shootChargeMax += Main.player.shootCost;
+                    Main.player.currShotMaxCost += Main.player.shotMaxCost;
                 }
                 break;
 
             case SHOTS:
                 cost = Main.player.currShotsUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shootCount++;
                     Main.player.currShotsUpCost += Main.player.shotsUpCost;
                 }
@@ -240,7 +241,7 @@ public class MenuPoints {
             case SHOT_SIZE:
                 cost = Main.player.currShotSizeCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shotSize += 5;
                     Main.player.currShotSizeCost += Main.player.shotSizeCost;
                 }
@@ -249,7 +250,7 @@ public class MenuPoints {
             case SHOT_SPEED:
                 cost = Main.player.currShotSpeedCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shotSpeed += 0.05;
                     Main.player.currShotSpeedCost += Main.player.shotSpeedCost;
                 }
@@ -258,7 +259,7 @@ public class MenuPoints {
             case SHOT_DAMAGE:
                 cost = Main.player.currShotDamageCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shotDamage++;
                     Main.player.currShotDamageCost += Main.player.shotDamageCost;
                 }
@@ -267,7 +268,7 @@ public class MenuPoints {
             case BURST:
                 cost = Main.player.currBurstUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.burst += 2;
                     Main.player.currBurstUpCost += Main.player.burstUpCost;
                 }
@@ -276,7 +277,7 @@ public class MenuPoints {
             case STAMINA_RECHARGE:
                 cost = Main.player.currStaminaChargeUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.staminaChargeRate += 2;
                     Main.player.currStaminaChargeUpCost += Main.player.staminaChargeUpCost;
                 }
@@ -285,7 +286,7 @@ public class MenuPoints {
             case STAMINA_MAX:
                 cost = Main.player.currStaminaMaxCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.staminaMax += 10000;
                     Main.player.currStaminaMaxCost += Main.player.staminaMaxCost;
                 }
@@ -294,7 +295,7 @@ public class MenuPoints {
             case HEAL:
                 cost = Main.player.currHealUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.heal++;
                     Main.player.currHealUpCost += Main.player.healUpCost;
                 }
@@ -303,7 +304,7 @@ public class MenuPoints {
             case SHIELD_RECHARGE:
                 cost = Main.player.currShieldChargeUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shieldChargeRate++;
                     Main.player.currShieldChargeUpCost += Main.player.shieldChargeUpCost;
                 }
@@ -312,7 +313,7 @@ public class MenuPoints {
             case SHIELD_MAX:
                 cost = Main.player.currShieldMaxCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shieldChargeMax += 100000;
                     Main.player.currShieldMaxCost += Main.player.shieldMaxCost;
                 }
@@ -321,7 +322,7 @@ public class MenuPoints {
             case SHIELD_RANGE:
                 cost = Main.player.currShieldRangeUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.shieldRange += 5;
                     Main.player.currShieldRangeUpCost += Main.player.shieldRangeUpCost;
                 }
@@ -334,7 +335,7 @@ public class MenuPoints {
             case BOMB_RECHARGE:
                 cost = Main.player.currBombChargeUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.bombRecharge++;
                     Main.player.currBombChargeUpCost += Main.player.bombChargeUpCost;
                 }
@@ -343,7 +344,7 @@ public class MenuPoints {
             case BOMB_RANGE:
                 cost = Main.player.currBombRangeUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.bombRange += 20;
                     Main.player.currBombRangeUpCost += Main.player.bombRangeUpCost;
                 }
@@ -352,7 +353,7 @@ public class MenuPoints {
             case BOMB_DAMAGE:
                 cost = Main.player.currBombDamageUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.bombDamage++;
                     Main.player.currBombDamageUpCost += Main.player.bombDamageUpCost;
                 }
@@ -361,7 +362,7 @@ public class MenuPoints {
             case STOMP_DAMAGE:
                 cost = Main.player.currStompDamageUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.stompDamage++;
                     Main.player.currStompDamageUpCost += Main.player.stompDamageUpCost;
                 }
@@ -370,7 +371,7 @@ public class MenuPoints {
             case STOMP_RANGE:
                 cost = Main.player.currStompRangeUpCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.stompRange += 10;
                     Main.player.currStompRangeUpCost += Main.player.stompRangeUpCost;
                 }
@@ -379,7 +380,7 @@ public class MenuPoints {
             case STOMP_COST:
                 cost = Main.player.currStompCheaperCost;
                 if (Main.player.sp >= cost) {
-                    Main.player.sp -= cost;
+                    Main.player.spendSp(cost);
                     Main.player.stompCost -= 1000;
                     Main.player.currStompCheaperCost += Main.player.stompCheaperCost;
                 }

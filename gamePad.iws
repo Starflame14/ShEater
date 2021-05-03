@@ -3,16 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="aae2c0ea-9f65-4a85-9eec-a582301f1b5b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/gamePad.iws" beforeDir="false" afterPath="$PROJECT_DIR$/gamePad.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/gamePad/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/Display.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gamePad/Bomb.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/Bomb.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gamePad/Enemy.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/Enemy.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gamePad/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/Game.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gamePad/LevelDesign.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/LevelDesign.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gamePad/MenuPoints.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/MenuPoints.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/gamePad/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Display.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/gamePad/PowerUp.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/gamePad/PowerUp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bomb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bomb.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Enemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/LevelDesign.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LevelDesign.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MenuPoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MenuPoints.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PowerUp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +157,7 @@
       <updated>1575142372241</updated>
       <workItem from="1619291652080" duration="16169000" />
       <workItem from="1619554823222" duration="279000" />
-      <workItem from="1619555396647" duration="22000000" />
+      <workItem from="1619555396647" duration="35082000" />
     </task>
     <task id="LOCAL-00001" summary="minor fixes, done through level 24">
       <created>1619344144784</created>
@@ -169,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619620688550</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="skill cost calculating reimplemented, preparing for balancing skill cost calculation">
+      <created>1619859339192</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1619859339192</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -232,7 +243,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="minor fixes, done through level 24" />
     <MESSAGE value="keyboard &amp; mouse support implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="keyboard &amp; mouse support implemented" />
+    <MESSAGE value="skill cost calculating reimplemented, preparing for balancing skill cost calculation" />
+    <option name="LAST_COMMIT_MESSAGE" value="skill cost calculating reimplemented, preparing for balancing skill cost calculation" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/../../Java/competitions/asd2/MainClass.java" />
